@@ -1,4 +1,5 @@
 from flask import Flask, render_template, jsonify, request
+import time
 
 app = Flask(__name__)
 
@@ -13,11 +14,14 @@ questions_answers = [
 # Store results for each question
 user_results = []
 
-def check_answer(input_text, correct_answer):
+def check_answer(input_text, correct_answer, response_time):
     if input_text.lower().strip() == correct_answer.lower().strip():
-        return "Correct answer , seems confident"
+        if response_time <= 4:
+            return "Correct answer, seems confident"
+        else:
+            return "Correct answer, but seems nervous"
     elif input_text.lower().strip() == "":
-        return "Somewhat correct answer, seems nervous"
+        return "No answer, seems nervous"
     else:
         return "Wrong answer, seems confused"
 
@@ -30,8 +34,9 @@ def check_answer_route():
     data = request.json
     question_id = int(data['question_id'])
     user_answer = data['answer']
+    response_time = data['response_time']
     correct_answer = questions_answers[question_id]['answer']
-    result = check_answer(user_answer, correct_answer)
+    result = check_answer(user_answer, correct_answer, response_time)
     user_results.append(result)
     return jsonify({"result": result})
 
@@ -41,3 +46,4 @@ def results():
 
 if __name__ == '__main__':
     app.run(debug=True)
+

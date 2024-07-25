@@ -2,6 +2,7 @@ let recognition;
 let isRecording = false;
 let currentQuestionIndex = 0;
 let timerInterval;
+let startTime;
 
 const questions = [
     { question: "What color is the sky?", answer: "blue" },
@@ -42,8 +43,9 @@ function startRecognition() {
 
     recognition.onresult = function(event) {
         const transcript = event.results[event.results.length - 1][0].transcript.trim();
+        const responseTime = (new Date().getTime() - startTime) / 1000;
         document.getElementById("answer").innerText = transcript;
-        checkAnswer(transcript);
+        checkAnswer(transcript, responseTime);
     };
 
     recognition.onerror = function(event) {
@@ -67,20 +69,21 @@ function stopRecognition() {
 
 function startTimer() {
     let timeLeft = 10;
+    startTime = new Date().getTime();
     timerInterval = setInterval(() => {
         timeLeft -= 1;
         document.getElementById("timer").innerText = timeLeft;
 
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
-            recordResult("Nervous");
+            recordResult("No answer, seems nervous");
             currentQuestionIndex += 1;
             askNextQuestion();
         }
     }, 1000);
 }
 
-function checkAnswer(answer) {
+function checkAnswer(answer, responseTime) {
     clearInterval(timerInterval);
     const correctAnswer = questions[currentQuestionIndex].answer;
 
@@ -91,7 +94,8 @@ function checkAnswer(answer) {
         },
         body: JSON.stringify({
             question_id: currentQuestionIndex,
-            answer: answer
+            answer: answer,
+            response_time: responseTime
         })
     })
     .then(response => response.json())
