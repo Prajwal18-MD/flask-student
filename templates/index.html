@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Emotion Analysis</title>
+    <link rel="stylesheet" href="static\css\style.css">
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Student Emotion Analysis</h1>
+        <div id="quiz-container">
+            <p><strong>Question:</strong> <span id="question"></span></p>
+            <button onclick="startQuiz()">Start Quiz</button>
+            <button onclick="stopRecognition()">Stop</button>
+            <p><strong>Time Remaining:</strong> <span id="timer">10</span> seconds</p>
+            <p><strong>Your Answer:</strong> <span id="answer"></span></p>
+            <p><strong>Result:</strong> <span id="result"></span></p>
+        </div>
+        <div id="results-container" style="display: none;">
+            <h2>Overall Results</h2>
+            <ul id="results-list"></ul>
+            <p><strong>Total Questions:</strong> <span id="total-questions"></span></p>
+        </div>
+    </div>
+</body>
+</html>

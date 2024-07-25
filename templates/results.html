@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Emotion Analysis</title>
+    <link rel="stylesheet" href="static\css\style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Emotion Analysis</h1>
+        <ul>
+            {% for result in results %}
+                <li>{{ result }}</li>
+            {% endfor %}
+        </ul>
+        <p><strong>Total Questions:</strong> {{ total }}</p>
+    </div>
+</body>
+</html>
